@@ -1,0 +1,69 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/product_provider.dart';
+//import '../models/product.dart';
+import 'add_product_screen.dart';
+
+class ProductListScreen extends StatefulWidget {
+  const ProductListScreen({super.key});
+
+  @override
+  State<ProductListScreen> createState() => _ProductListScreenState();
+}
+
+class _ProductListScreenState extends State<ProductListScreen> {
+  late Future<void> _productsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _productsFuture = Provider.of<ProductProvider>(context, listen: false).loadProducts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final productProvider = Provider.of<ProductProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Products")),
+      body: FutureBuilder(
+        future: _productsFuture,
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (productProvider.products.isEmpty) {
+            return const Center(child: Text("No products yet. Add some!"));
+          }
+          return ListView.builder(
+            itemCount: productProvider.products.length,
+            itemBuilder: (ctx, i) {
+              final p = productProvider.products[i];
+              return Card(
+                child: ListTile(
+                  title: Text(p.name),
+                  subtitle: Text("Stock: ${p.stockQty}, B2B: ₹${p.b2bPrice}, B2C: ₹${p.baseB2cPrice}"),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      productProvider.deleteProduct(p.id!);
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (ctx) => const AddProductScreen()),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
