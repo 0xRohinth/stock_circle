@@ -69,11 +69,11 @@ Set up the foundation of the **Offline Stock Management App** and implement the 
 
 - `ProductListScreen` → Shows product list.
 
-    ![image of AddProductScreen](image\Phase1-ProductListScreen.png)
+  <img alt="image of ProductListScreen" src=image\Phase1-ProductListScreen.png />
 
 - `AddProductScreen` → Form to add product.
 
-    ![image of AddProductScreen](image\Phase1-AddProductScreen.png)
+  <img alt="image of AddProductScreen" src=image\Phase1-AddProductScreen.png />
 
 
 ---
