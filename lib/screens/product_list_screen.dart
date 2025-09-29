@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:stock_circle/models/product.dart';
+import 'package:stock_circle/screens/edit_product_screen.dart';
 import '../providers/product_provider.dart';
 //import '../models/product.dart';
 import 'add_product_screen.dart';
@@ -17,7 +19,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
   @override
   void initState() {
     super.initState();
-    _productsFuture = Provider.of<ProductProvider>(context, listen: false).loadProducts();
+    _productsFuture = Provider.of<ProductProvider>(
+      context,
+      listen: false,
+    ).loadProducts();
   }
 
   @override
@@ -42,7 +47,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
               return Card(
                 child: ListTile(
                   title: Text(p.name),
-                  subtitle: Text("Stock: ${p.stockQty}, B2B: ₹${p.b2bPrice}, B2C: ₹${p.baseB2cPrice}"),
+                  subtitle: Text(
+                    "Stock: ${p.stockQty}, B2B: ₹${p.b2bPrice}, B2C: ₹${p.baseB2cPrice}",
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditProductScreen(product:p ),
+                      ),
+                    );
+                  },
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
                     onPressed: () {

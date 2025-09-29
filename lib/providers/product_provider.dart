@@ -18,8 +18,9 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> updateProduct(Product product) async {
-    await DBHelper.updateProduct(product);
-    await loadProducts();
+  await DBHelper.updateProduct(product);
+  await loadProducts(); // reload products from DB
+  notifyListeners();
   }
 
   Future<void> deleteProduct(int id) async {
