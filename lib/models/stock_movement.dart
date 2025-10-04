@@ -22,7 +22,7 @@ class StockMovement {
       'type': type,
       'quantity': quantity,
       'date': date,
-      'note': note,
+      'notes': note,
     };
   }
 

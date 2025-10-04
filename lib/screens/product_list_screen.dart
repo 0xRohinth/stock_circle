@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stock_circle/models/product.dart';
+//import 'package:stock_circle/models/product.dart';
 import 'package:stock_circle/screens/edit_product_screen.dart';
 import '../providers/product_provider.dart';
 //import '../models/product.dart';
 import 'add_product_screen.dart';
+import 'stock_movement_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -54,8 +55,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            EditProductScreen(product:p ),
+                        builder: (context) => EditProductScreen(product: p),
                       ),
                     );
                   },
@@ -71,14 +71,49 @@ class _ProductListScreenState extends State<ProductListScreen> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (ctx) => const AddProductScreen()),
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: "addProduct",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (ctx) => const AddProductScreen()),
+              );
+            },
+            child: const Icon(Icons.add),
+            tooltip: "Add Product",
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: "stockIn",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => const StockMovementScreen(type: "in"),
+                ),
+              );
+            },
+            child: const Icon(Icons.arrow_downward),
+            tooltip: "Stock In",
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: "stockOut",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => const StockMovementScreen(type: "out"),
+                ),
+              );
+            },
+            child: const Icon(Icons.arrow_upward),
+            tooltip: "Stock Out",
+          ),
+        ],
       ),
     );
   }
