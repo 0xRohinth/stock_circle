@@ -28,6 +28,7 @@ Future<void> _saveMovement() async {
 
     // For Stock Out, check stock
     if (widget.type == "out" && quantity > _selectedProduct!.stockQty) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Not enough stock available!")),
       );
@@ -36,10 +37,16 @@ Future<void> _saveMovement() async {
 
     // Use provider to add movement and update stock
     await Provider.of<ProductProvider>(context, listen: false)
-        .addStockMovement(_selectedProduct!.id!, quantity, widget.type,
-            note: _noteController.text);
+        .addStockMovement(
+      _selectedProduct!.id!,
+      quantity,
+      widget.type,
+      note: _noteController.text,
+    );
 
-    Navigator.pop(context); // go back after updating
+    // Guard navigation with a mounted check
+    if (!mounted) return;
+    Navigator.pop(context);
   }
 }
 
